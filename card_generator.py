@@ -4,10 +4,14 @@ import math
 import time
 from tqdm import tqdm
 from random import randint
-import webbrowser
 
 
 MAX_CARD_RESULTS = 175
+
+all_commanders = list()
+monocolored_commanders = list()
+multicolored_commanders = list()
+#cards = list()
 
 
 class Card(object):
@@ -29,6 +33,10 @@ class Card(object):
         return '{\'name\': \'' + str(self.name) + '\', \'id\': \'' + str(self.id) + '\', \'scryfall_uri\': \'' + str(self.scryfall_uri) + '\', \'png\': \'' + str(self.png) + '\', \'color_identity\': ' + str(self.color_identity) + '}'
 
 
+def get_all_commanders():
+    return all_commanders
+
+
 def get_commanders(page):
     url = "https://api.scryfall.com/cards/search"
 
@@ -39,10 +47,6 @@ def get_commanders(page):
     }
 
     return requests.request("GET", url, headers=headers, params=querystring)
-
-
-def pause():
-    program_pause = input("Press the ENTER for another or CTRL + C to quit...")
 
 
 def add_cards(new_card_array, cards, page, last_page):
@@ -73,12 +77,11 @@ def add_cards(new_card_array, cards, page, last_page):
 
 
 def get_commander(commanders):
-    rand = randint(0, cards.__len__() - 1)
-    return cards[rand]
+    rand = randint(0, commanders.__len__() - 1)
+    return commanders[rand]
 
 
-if __name__ == "__main__":
-
+def initialize():
     page = 1
     last_page = 1
     has_more = True
@@ -121,31 +124,29 @@ if __name__ == "__main__":
 
         page += 1
 
-        all_commanders = cards
-        multicolored_commanders = []
-        monocolored_commanders = []
-
-        for commander_n in all_commanders:
-            print(str(commander_n.color_identity))
-
-            if len(commander_n.color_identity) < 2:
-                monocolored_commanders.append(commander_n)
-                print("Monocolored!")
-            else:
-                multicolored_commanders.append(commander_n)
-                print("Multicolored!")
-
     print('Loading Complete!')
 
-    while True:
-        commander = get_commander(cards)
+    global all_commanders
+    global multicolored_commanders
+    global monocolored_commanders
 
-        print('\nYour Random Commander Is: ')
-        time.sleep(0.2)
-        print(commander)
+    all_commanders = cards.copy()
 
-        webbrowser.open(commander.scryfall_uri)
+    for commander_n in cards:
 
-        time.sleep(0.1)
-        print()
-        pause()
+        if len(commander_n.color_identity) < 2:
+            monocolored_commanders.append(commander_n)
+        else:
+            multicolored_commanders.append(commander_n)
+
+    print ("\nAll Commanders:")
+    for card in all_commanders:
+        print(card)
+
+    print ("\nMonocolored Commanders:\n")
+    for card in monocolored_commanders:
+        print(card)
+
+    print ("\nMulticolored Commanders:\n")
+    for card in multicolored_commanders:
+        print(card)

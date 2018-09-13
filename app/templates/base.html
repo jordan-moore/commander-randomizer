@@ -1,7 +1,12 @@
-<div>
-    Commander Randomizer:
+{% extends "bootstrap/base.html" %}
+{% block title %}Commander Randomizer{% endblock %}
+
+{% block navbar %}
+<div style="padding-left: 15px;" class="navbar navbar-fixed-top">
+  <!-- ... -->
     <a href="/index">Home</a>
-    <a href="/random-commander">Commander Randomizer</a>
+    <a style="padding-left: 10px;" href="/random-commander">Commander-Randomizer</a>
 </div>
 
 <hr />
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "bootstrap/base.html" %}
+{% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
@@ -6,14 +6,17 @@ Random Commamder Generator
 {% endblock %}
 
 {% block content %}
-    <h1>Random Commander Generator</h1>
-    <form action="" method="post" novalidate>
+    <h1 style="padding-left: 10px;">Random Commander Generator</h1>
+
+    <form class="form form-horizontal" style="padding-left: 20px;" method="post" role="form" novalidate>
         {{ form.hidden_tag() }}
         {{ wtf.form_errors(form, hiddens="only") }}
-
-        {{ wtf.form_field(form.color_restrictions.label) }}<br>
-        {{ form.color_restrictions(size=32) }}
+        <br />
+        <h4>Color Identity Restrictions:</h4>
+        {{ wtf.form_field(form.color_restrictions) }}
+        <br />
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
     </form>
+
 {% endblock %}

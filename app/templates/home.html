@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-</head>
-<body>
-    {% extends "base.html" %}
-</body>
-</html>
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Random Commamder Generator
+{% endblock %}
+
+{% block content %}
+    <h1 style="padding-left: 10px;">Random Commander Generator</h1>
+
+    <div style="padding: 20px; width: 70%;">
+        <p>Hello and thanks for checking out my commander generator! It's a pet project of mine so I'm not sure how much I'll be taking new feature requests etc. but I hope it helps some folks out there have fun with it.</p>
+    </div>
+{% endblock %}
