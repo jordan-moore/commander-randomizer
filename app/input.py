@@ -6,5 +6,5 @@ from wtforms import StringField, RadioField, BooleanField, SubmitField
 class RandomForm(FlaskForm):
     #username = StringField('Username', validators=[DataRequired()])
     color_restrictions = RadioField('Color Identity Restrictions', choices=[('none', 'None'), ('multicolored', 'Multicolored'), ('monocolored', 'Monocolored')], default='none')
-    remember_me = BooleanField('Remember Me')
+    # remember_me = BooleanField('Remember Me')
     submit = SubmitField('Generate Commander')

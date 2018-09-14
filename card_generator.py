@@ -23,11 +23,11 @@ class Card(object):
 
     # The class "constructor" - It's actually an initializer
     def __init__(self, name, id, scryfall_uri, png, color_identity, type_line):
-        print()
-        print('Name: ' + name)
-        print('Color Identity: ' + str(color_identity))
+        # print()
+        # print('Name: ' + name)
+        # print('Color Identity: ' + str(color_identity))
         color_identity = remove_duplicates(color_identity)
-        print('Clean Color Identity: ' + str(color_identity))
+        # print('Clean Color Identity: ' + str(color_identity))
 
         type_line = type_line.replace('Enchantment ', '')
 
@@ -43,9 +43,9 @@ class Card(object):
             types = type_line.split()
             i = 0
             for type in types:
-                print(str(i) + ': ' + type)
+                # print(str(i) + ': ' + type)
                 i += 1
-            self.description = 'planeswalker that goes by ' + types[3]
+            self.description = ' planeswalker that goes by ' + types[3]
         elif 'Legendary Creature' in type_line:
             types = type_line.split()
             i = 0
@@ -56,8 +56,12 @@ class Card(object):
             creature_types = list()
             for x in range(3,len(types)):
                 creature_types.append(types[x])
-                print(types[x])
-            print('Creature Types: ' + str(creature_types))
+                # print(types[x])
+            # print('Creature Types: ' + str(creature_types))
+
+            if creature_types[0][0] == 'A' or creature_types[0][0] == 'E' or creature_types[0][0] == 'I' or creature_types[0][0] == 'O' or creature_types[0][0] == 'U':
+                self.description = self.description + 'n'
+            self.description = self.description + ' '
 
             if len(creature_types) == 1:
                 self.description = self.description + creature_types[0]
@@ -90,12 +94,14 @@ class Card(object):
             for color in color_identity:
                 if x == 0:
                     self.description = self.description + str(translate_color(color_identity[x])) + ', '
+                elif x == (len(color_identity) - 2):
+                    self.description = self.description + str(translate_color(color_identity[x])) + ' and '
                 elif x == (len(color_identity) - 1):
                     self.description = self.description + str(translate_color(color_identity[x]))
                 else:
                     self.description = self.description + str(translate_color(color_identity[x])) + ', '
                 x += 1
-        print ('Description: ' + self.description)
+        # print ('Description: ' + self.description)
 
     def __str__(self):
         return '{\'name\': \'' + str(self.name) + '\', \'id\': \'' + str(self.id) + '\', \'scryfall_uri\': \'' + str(self.scryfall_uri) + '\', \'png\': \'' + str(self.png) + '\'type_line\': \'' + str(self.type_line) + '\', \'color_identity\': ' + str(self.color_identity) + '}'
@@ -111,6 +117,14 @@ def remove_duplicates(a_list):
 
 def get_all_commanders():
     return all_commanders
+
+
+def get_monocolored_commanders():
+    return monocolored_commanders
+
+
+def get_multicolored_commanders():
+    return multicolored_commanders
 
 
 def get_commanders(page):
@@ -158,7 +172,7 @@ def add_cards(new_card_array, cards, page, last_page):
         color_identity = card['color_identity']
 
         new_card = Card(name, card_id, scryfall_uri, png, color_identity, type_line)
-        time.sleep(0.01)
+        # time.sleep(0.01)
         # print('Adding Card: ' + str(new_card))
         # print()
 
@@ -196,7 +210,7 @@ def initialize():
             if key == 'total_cards' and page == 1:
                 num_commanders = int(value)
                 last_page = str(math.ceil(num_commanders / MAX_CARD_RESULTS))
-                print('Commanders Found: ' + str(num_commanders) + '\n')
+                # print('Commanders Found: ' + str(num_commanders) + '\n')
             if key == 'has_more':
                 has_more = bool(value)
                 # time.sleep(0.02)
@@ -206,11 +220,11 @@ def initialize():
                 new_card_data = value
                 # print('New Card Data: ' + str(new_card_data))
 
-        print()
+        # print()
         cards = add_cards(new_card_data, cards, page, last_page)
 
         # time.sleep(0.02)
-        print('\nCommanders: ' + str(cards.__len__()) + ' out of ' + str(num_commanders))
+        # print('\nCommanders: ' + str(cards.__len__()) + ' out of ' + str(num_commanders))
         # time.sleep(0.02)
 
         page += 1
@@ -229,7 +243,7 @@ def initialize():
             monocolored_commanders.append(commander_n)
         else:
             multicolored_commanders.append(commander_n)
-
+    '''
     print ("\nAll Commanders:")
     for card in all_commanders:
         print(card)
@@ -241,3 +255,4 @@ def initialize():
     print ("\nMulticolored Commanders:\n")
     for card in multicolored_commanders:
         print(card)
+    '''

@@ -21,9 +21,9 @@ def login():
         if form.color_restrictions.data == 'none':
             return redirect('/random/no-restrictions')
         if form.color_restrictions.data == 'multicolored':
-            return redirect('/index')
+            return redirect('/random/multicolored')
         if form.color_restrictions.data == 'monocolored':
-            return redirect('/index')
+            return redirect('/random/monocolored')
 
         return redirect('/index')
 
@@ -32,8 +32,28 @@ def login():
 
 @app.route('/random/no-restrictions')
 def no_restrictions():
-    print(card_generator.get_all_commanders())
+    # print(card_generator.get_all_commanders())
     commander = card_generator.get_commander(card_generator.get_all_commanders())
+    commander_description = commander.description
+    commander_image = commander.png
+    commander_name = commander.name
+    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description, url=commander.scryfall_uri)
+
+
+@app.route('/random/monocolored')
+def monocolored():
+    # print(card_generator.get_all_commanders())
+    commander = card_generator.get_commander(card_generator.get_monocolored_commanders())
+    commander_description = commander.description
+    commander_image = commander.png
+    commander_name = commander.name
+    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description, url=commander.scryfall_uri)
+
+
+@app.route('/random/multicolored')
+def multicolored():
+    # print(card_generator.get_all_commanders())
+    commander = card_generator.get_commander(card_generator.get_multicolored_commanders())
     commander_description = commander.description
     commander_image = commander.png
     commander_name = commander.name
