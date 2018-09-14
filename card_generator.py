@@ -2,6 +2,7 @@ import requests
 import json
 import math
 import time
+import enums
 from tqdm import tqdm
 from random import randint
 
@@ -11,6 +12,10 @@ MAX_CARD_RESULTS = 175
 all_commanders = list()
 monocolored_commanders = list()
 multicolored_commanders = list()
+
+bad_commanders = list()
+decent_commanders = list()
+good_commanders = list()
 
 
 class Card(object):
@@ -233,11 +238,66 @@ def get_commander(commanders):
     return commanders[rand]
 
 
-def filter_commanders(commanders):
+def popularity_sort(commanders):
+    return sorted(commanders, key=lambda x: x.edhrec_rank, reverse=False)
+
+
+def filter_commanders(commanders, usd_filter, tix_filter, popularity_filter, cmc_filter, on_mtgo_bool, f_white_borders_bool):
     filtered_commanders = list()
+    '''
+    print()
+    print('Filters')
+    print('USD Filter: ' + str(usd_filter))
+    print('Tix Filter: ' + str(tix_filter))
+    print('Popularity Filter: ' + str(popularity_filter))
+    print('CMC Filter: ' + str(cmc_filter))
+    print('On MTGO Bool: ' + str(on_mtgo_bool))
+    print('F White Borders Bool: ' + str(f_white_borders_bool))
+    print()
+    '''
 
     for commander in commanders:
-        add_commander = False
+        add_commander = True
+
+        if popularity_filter == enums.Popularity.BAD:
+            add_commander = commander in bad_commanders
+        elif popularity_filter == enums.Popularity.DECENT:
+            add_commander = commander in decent_commanders
+        elif popularity_filter == enums.Popularity.GOOD:
+            add_commander = commander in good_commanders
+
+        if usd_filter != enums.PriceUSD.NO_LIMIT and commander.price_usd == 'NA':
+            # print('Price not found.')
+            add_commander = False
+        elif usd_filter == enums.PriceUSD.UNDER_25:
+            add_commander = bool(add_commander and float(commander.price_usd) < 25)
+        elif usd_filter == enums.PriceUSD.UNDER_10:
+            add_commander = add_commander and float(commander.price_usd) < 10
+        elif usd_filter == enums.PriceUSD.UNDER_5:
+            add_commander = add_commander and float(commander.price_usd) < 5
+        elif usd_filter == enums.PriceUSD.UNDER_1:
+            add_commander = add_commander and float(commander.price_usd) < 1
+
+        if tix_filter != enums.PriceTIX.NO_LIMIT and commander.price_tix == 'NA':
+            # print('Price not found.')
+            add_commander = False
+        elif tix_filter == enums.PriceTIX.UNDER_25:
+            add_commander = add_commander and float(commander.price_tix) < 25
+        elif tix_filter == enums.PriceTIX.UNDER_10:
+            add_commander = add_commander and float(commander.price_tix) < 10
+        elif tix_filter == enums.PriceTIX.UNDER_5:
+            add_commander = add_commander and float(commander.price_tix) < 5
+        elif tix_filter == enums.PriceTIX.UNDER_1:
+            add_commander = add_commander and float(commander.price_tix) < 1
+
+        if cmc_filter != enums.CMC.NONE:
+            add_commander = add_commander and int(commander.cmc) <= cmc_filter
+
+        if on_mtgo_bool:
+            add_commander = add_commander and commander.mtgo_available
+
+        if f_white_borders_bool:
+            add_commander = add_commander and commander.border_color != 'white'
 
         if add_commander:
             filtered_commanders.append(commander)
@@ -294,14 +354,26 @@ def initialize():
     global multicolored_commanders
     global monocolored_commanders
 
-    all_commanders = cards.copy()
+    all_commanders = popularity_sort(cards.copy())
 
-    for commander_n in cards:
+    for commander_n in all_commanders:
 
         if len(commander_n.color_identity) < 2:
             monocolored_commanders.append(commander_n)
         else:
             multicolored_commanders.append(commander_n)
+
+    global decent_commanders
+    global bad_commanders
+    global good_commanders
+
+    for x in range(0, len(all_commanders)):
+        if x <= 100:
+            good_commanders.append(all_commanders[x])
+        if x >= len(all_commanders) - len(all_commanders)/3:
+            bad_commanders.append(all_commanders[x])
+        else:
+            decent_commanders.append(all_commanders[x])
     '''
     print ("\nAll Commanders:")
     for card in all_commanders:
@@ -314,4 +386,16 @@ def initialize():
     print ("\nMulticolored Commanders:\n")
     for card in multicolored_commanders:
         print(card)
-    '''
+
+    print("\nDecent Commanders:\n")
+    for card in decent_commanders:
+        print(card)
+
+    print("\nBad Commanders:\n")
+    for card in bad_commanders:
+        print(card)
+
+    print("\nGood Commanders:\n")
+    for card in good_commanders:
+        print(card)
+'''

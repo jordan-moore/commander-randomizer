@@ -15,7 +15,33 @@ Random Commamder Generator
         <h4>Color Identity Restrictions:</h4>
         {{ wtf.form_field(form.color_restrictions) }}
         <br />
+
+        <br />
+        <h4>Popularity Restrictions:</h4>
+        {{ wtf.form_field(form.edhrec_restrictions) }}
+        <br />
+
+        <br />
+        <h4>Max Converted Mana Cost:</h4>
+        {{ wtf.form_field(form.cmc_max) }}
+        <br />
+
+        <br />
+        <h4>Max Price USD:</h4>
+        {{ wtf.form_field(form.usd_max) }}
+        <br />
+
+        <br />
+        <h4>Max Price Tix:</h4>
+        {{ wtf.form_field(form.tix_max) }}
+        <br />
+
+        <p>{{ form.mtgo_only() }} {{ form.mtgo_only.label }}</p>
+        <p>{{ form.f_white_borders() }} {{ form.f_white_borders.label }}</p>
+
         <p>{{ form.submit() }}</p>
     </form>
+
+    <br />
 
 {% endblock %}
