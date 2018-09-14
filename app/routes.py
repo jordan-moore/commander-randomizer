@@ -34,7 +34,7 @@ def login():
 def no_restrictions():
     print(card_generator.get_all_commanders())
     commander = card_generator.get_commander(card_generator.get_all_commanders())
-    commander_description = "green badass elf!"
+    commander_description = commander.description
     commander_image = commander.png
     commander_name = commander.name
-    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description)
+    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description, url=commander.scryfall_uri)
