@@ -1,14 +1,20 @@
-from flask import render_template, redirect
+from flask import render_template, redirect, url_for
 from app import app
 from app.input import RandomForm
 import card_generator
 
 card_generator.initialize()
 
+
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('/home.html', title='Home')
+
+
+@app.route('/health', methods=['GET', 'POST'])
+def hello_world():
+    return '200', 200
 
 
 @app.route('/random-commander', methods=['GET', 'POST'])
@@ -19,7 +25,7 @@ def login():
         print(form.color_restrictions.data)
 
         if form.color_restrictions.data == 'none':
-            return redirect('/random/no-restrictions')
+            return redirect(url_for('no_restrictions'))
         if form.color_restrictions.data == 'multicolored':
             return redirect('/random/multicolored')
         if form.color_restrictions.data == 'monocolored':

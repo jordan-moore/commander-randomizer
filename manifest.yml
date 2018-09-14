@@ -1,0 +1,11 @@
+applications:
+- path: .
+  memory: 1024M
+  instances: 1
+  domain: mybluemix.net
+  name: commander-randomizer
+  host: commander-randomizer
+  disk_quota: 1024M
+  timer: 180
+  health-check-type: http
+  health-check-http-endpoint: /health

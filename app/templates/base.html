@@ -1,12 +1,30 @@
 {% extends "bootstrap/base.html" %}
+
+<style>
+* {
+   margin: 0;
+   padding: 0;
+}
+.imgbox {
+   display: grid;
+   height: 70%;
+}
+.center-fit {
+   max-width: 70%;
+   max-height: 70vh;
+   margin: auto;
+}
+</style>
+
 {% block title %}Commander Randomizer{% endblock %}
 
 {% block navbar %}
-<div style="padding-left: 15px;" class="navbar navbar-fixed-top">
-  <!-- ... -->
-    <a href="/index">Home</a>
-    <a style="padding-left: 10px;" href="/random-commander">Commander-Randomizer</a>
-</div>
+<div class="navbar navbar-fixed-top"><hr /></div>
 
-<hr />
+<div class="navbar navbar-fixed-top">
+    <p style="background-color: white;">
+        <a style="padding-left: 15px;" href="/index">Home</a>
+        <a style="padding-left: 10px;" href="/random-commander">Commander-Randomizer</a>
+    </p>
+</div>
 {% endblock %}

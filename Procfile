@@ -1,1 +1,1 @@
-web: python random-commander-app.py
+web: python3 random-commander-app.py

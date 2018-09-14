@@ -21,23 +21,48 @@ class Card(object):
     id = ""
     type_line = ""
 
+    jpg = ""
+    price_tix = ""
+    price_usd = ""
+    edhrec_rank = ""
+    cmc = ""
+    border_color = ""
+
     # The class "constructor" - It's actually an initializer
-    def __init__(self, name, id, scryfall_uri, png, color_identity, type_line):
+    def __init__(self, name, id, scryfall_uri, png, jpg, color_identity, type_line, price_tix, price_usd, edhrec_rank, cmc, border_color):
         # print()
         # print('Name: ' + name)
         # print('Color Identity: ' + str(color_identity))
         color_identity = remove_duplicates(color_identity)
         # print('Clean Color Identity: ' + str(color_identity))
 
-        type_line = type_line.replace('Enchantment ', '')
+        creature_types = list()
+
+        if 'Enchantment' in type_line:
+            type_line = type_line.replace('Enchantment ', '')
+            creature_types.append('Enchantment')
+        if 'Artifact' in type_line:
+            type_line = type_line.replace('Artifact ', '')
+            creature_types.append('Artifact')
 
         self.name = name
         self.id = id
         self.scryfall_uri = scryfall_uri
         self.png = png
+        self.jpg = jpg
         self.color_identity = color_identity
         self.type_line = type_line
         self.description = str()
+
+        self.price_usd = price_usd
+        self.price_tix = price_tix
+        self.mtgo_available = True
+        if price_tix == 'NA':
+            self.mtgo_available = False
+
+        self.edhrec_rank = edhrec_rank
+        self.cmc = cmc
+        self.border_color = border_color
 
         if 'Legendary Planeswalker' in type_line:
             types = type_line.split()
@@ -53,7 +78,6 @@ class Card(object):
                 # print(str(i) + ': ' + type)
                 i += 1
 
-            creature_types = list()
             for x in range(3,len(types)):
                 creature_types.append(types[x])
                 # print(types[x])
@@ -102,9 +126,10 @@ class Card(object):
                     self.description = self.description + str(translate_color(color_identity[x])) + ', '
                 x += 1
         # print ('Description: ' + self.description)
+        # print(self)
 
     def __str__(self):
-        return '{\'name\': \'' + str(self.name) + '\', \'id\': \'' + str(self.id) + '\', \'scryfall_uri\': \'' + str(self.scryfall_uri) + '\', \'png\': \'' + str(self.png) + '\'type_line\': \'' + str(self.type_line) + '\', \'color_identity\': ' + str(self.color_identity) + '}'
+        return '{\'name\': \'' + str(self.name) + '\', \'id\': \'' + str(self.id) + '\', \'scryfall_uri\': \'' + str(self.scryfall_uri) + '\', \'png\': \'' + str(self.png) + '\', \'jpg\': \'' + str(self.jpg) + '\', \'type_line\': \'' + str(self.type_line) + '\', \'pric_usd\': \'' + str(self.price_usd) + '\', \'price_tix\': \'' + str(self.price_tix) +  '\', \'mtgo_available\': \'' + str(self.mtgo_available) + '\', \'edhrec_rank\': \'' + str(self.edhrec_rank) + '\', \'cmc\': \'' + str(self.cmc) + '\', \'border_color\': \'' + str(self.border_color) + '\', \'color_identity\': ' + str(self.color_identity) + '}'
 
 
 def remove_duplicates(a_list):
@@ -164,14 +189,36 @@ def add_cards(new_card_array, cards, page, last_page):
         card_id = card['id']
         scryfall_uri = card['scryfall_uri']
         type_line = card['type_line']
+
+        try:
+            price_tix = card['tix']
+        except KeyError:
+            price_tix = "NA"
+
+        try:
+            price_usd = card['usd']
+        except:
+            price_usd = "NA"
+
+        edhrec_rank = card['edhrec_rank']
+        cmc = card['cmc']
+        border_color = card['border_color']
+
         try:
             png = card['image_uris']['png']
         except KeyError:
-            png = "No PNG Image"
+            if card['layout'] == 'transform':
+                png = card['card_faces'][0]['image_uris']['png']
+            else:
+                png = "No PNG Image"
+        try:
+            jpg = card['image_uris']['large']
+        except KeyError:
+            jpg = "No JPG Image"
 
         color_identity = card['color_identity']
 
-        new_card = Card(name, card_id, scryfall_uri, png, color_identity, type_line)
+        new_card = Card(name, card_id, scryfall_uri, png, jpg, color_identity, type_line, price_tix, price_usd, edhrec_rank, cmc, border_color)
         # time.sleep(0.01)
         # print('Adding Card: ' + str(new_card))
         # print()
@@ -184,6 +231,18 @@ def add_cards(new_card_array, cards, page, last_page):
 def get_commander(commanders):
     rand = randint(0, commanders.__len__() - 1)
     return commanders[rand]
+
+
+def filter_commanders(commanders):
+    filtered_commanders = list()
+
+    for commander in commanders:
+        add_commander = False
+
+        if add_commander:
+            filtered_commanders.append(commander)
+
+    return filtered_commanders
 
 
 def initialize():
