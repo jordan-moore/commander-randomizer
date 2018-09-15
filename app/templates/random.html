@@ -8,34 +8,24 @@ Random Commamder Generator
 {% block content %}
     <h1 style="padding-left: 10px;">Random Commander Generator</h1>
 
-    <form class="form form-horizontal" style="padding-left: 20px;" method="post" role="form" novalidate>
+    <form style="padding-left: 20px; padding-top: 0px;" method="post" role="form" novalidate>
         {{ form.hidden_tag() }}
         {{ wtf.form_errors(form, hiddens="only") }}
-        <br />
-        <h4>Color Identity Restrictions:</h4>
+        <h5>Color Identity Restrictions:</h5>
         {{ wtf.form_field(form.color_restrictions) }}
-        <br />
-
-        <br />
-        <h4>Popularity Restrictions:</h4>
+        <div style="padding-top: 5px;"></div>
+        <h5>Popularity Restrictions:</h5>
         {{ wtf.form_field(form.edhrec_restrictions) }}
-        <br />
-
-        <br />
-        <h4>Max Converted Mana Cost:</h4>
+        <div style="padding-top: 5px;"></div>
+        <h5>Max Converted Mana Cost:</h5>
         {{ wtf.form_field(form.cmc_max) }}
-        <br />
-
-        <br />
-        <h4>Max Price USD:</h4>
+        <div style="padding-top: 5px;"></div>
+        <h5>Max Price USD:</h5>
         {{ wtf.form_field(form.usd_max) }}
-        <br />
-
-        <br />
-        <h4>Max Price Tix:</h4>
+        <div style="padding-top: 5px;"></div>
+        <h5>Max Price Tix:</h5>
         {{ wtf.form_field(form.tix_max) }}
-        <br />
-
+        <div style="padding-top: 5px;"></div>
         <p>{{ form.mtgo_only() }} {{ form.mtgo_only.label }}</p>
         <p>{{ form.f_white_borders() }} {{ form.f_white_borders.label }}</p>
 

@@ -234,6 +234,9 @@ def add_cards(new_card_array, cards, page, last_page):
 
 
 def get_commander(commanders):
+
+    if len(commanders) < 1:
+        return Card('Totally Lost','F15HM4N', 'https://scryfall.com/card/m19/81/totally-lost','https://img.scryfall.com/cards/large/en/m19/81.jpg?1531451629','https://img.scryfall.com/cards/large/en/m19/81.jpg?1531451629', ['U'], 'Legendary Creature - Fish Man Thingamajig','0.99','0.99', '1', '5', 'black')
     rand = randint(0, commanders.__len__() - 1)
     return commanders[rand]
 
