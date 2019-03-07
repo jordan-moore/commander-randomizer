@@ -32,9 +32,10 @@ class Card(object):
     edhrec_rank = ""
     cmc = ""
     border_color = ""
+    edhrec = ""
 
     # The class "constructor" - It's actually an initializer
-    def __init__(self, name, id, scryfall_uri, png, jpg, color_identity, type_line, price_tix, price_usd, edhrec_rank, cmc, border_color):
+    def __init__(self, name, id, scryfall_uri, png, jpg, color_identity, type_line, price_tix, price_usd, edhrec_rank, cmc, border_color, edhrec):
         # print()
         # print('Name: ' + name)
         # print('Color Identity: ' + str(color_identity))
@@ -55,6 +56,7 @@ class Card(object):
         self.scryfall_uri = scryfall_uri
         self.png = png
         self.jpg = jpg
+        self.edhrec = edhrec
         self.color_identity = color_identity
         self.type_line = type_line
         self.description = str()
@@ -204,8 +206,16 @@ def add_cards(new_card_array, cards, page, last_page):
             price_usd = card['usd']
         except:
             price_usd = "NA"
-
-        edhrec_rank = card['edhrec_rank']
+        try:
+            edhrec_rank = card['edhrec_rank']
+            print('EDHREC rank for ' + name + ': ' + str(card['edhrec_rank']))
+        except:
+            edhrec_rank = 1337
+            print('Couldn\'t find EDHREC rank for: ' + name)
+        try:
+            edhrec = card['related_uris']['edhrec']
+        except KeyError:
+            edhrec = "https://edhrec.com/cards/totally-lost"
         cmc = card['cmc']
         border_color = card['border_color']
 
@@ -223,7 +233,7 @@ def add_cards(new_card_array, cards, page, last_page):
 
         color_identity = card['color_identity']
 
-        new_card = Card(name, card_id, scryfall_uri, png, jpg, color_identity, type_line, price_tix, price_usd, edhrec_rank, cmc, border_color)
+        new_card = Card(name, card_id, scryfall_uri, png, jpg, color_identity, type_line, price_tix, price_usd, edhrec_rank, cmc, border_color, edhrec)
         # time.sleep(0.01)
         # print('Adding Card: ' + str(new_card))
         # print()
@@ -236,7 +246,7 @@ def add_cards(new_card_array, cards, page, last_page):
 def get_commander(commanders):
 
     if len(commanders) < 1:
-        return Card('Totally Lost','F15HM4N', 'https://scryfall.com/card/m19/81/totally-lost','https://img.scryfall.com/cards/large/en/m19/81.jpg?1531451629','https://img.scryfall.com/cards/large/en/m19/81.jpg?1531451629', ['U'], 'Legendary Creature - Fish Man Thingamajig','0.99','0.99', '1', '5', 'black')
+        return Card('Totally Lost','F15HM4N', 'https://scryfall.com/card/m19/81/totally-lost','https://img.scryfall.com/cards/large/en/m19/81.jpg?1531451629','https://img.scryfall.com/cards/large/en/m19/81.jpg?1531451629', ['U'], 'Legendary Creature - Fish Man Thingamajig','0.99','0.99', '1', '5', 'black', 'https://edhrec.com/cards/totally-lost')
     rand = randint(0, commanders.__len__() - 1)
     return commanders[rand]
 

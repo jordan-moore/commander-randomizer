@@ -111,7 +111,7 @@ def no_restrictions():
     commander_description = commander.description
     commander_image = commander.png
     commander_name = commander.name
-    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description, url=commander.scryfall_uri)
+    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description, url=commander.scryfall_uri, edhrec=commander.edhrec)
 
 
 @app.route('/random/monocolored')
@@ -177,7 +177,7 @@ def monocolored():
     commander_description = commander.description
     commander_image = commander.png
     commander_name = commander.name
-    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description, url=commander.scryfall_uri)
+    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description, url=commander.scryfall_uri, edhrec=commander.edhrec)
 
 
 @app.route('/random/multicolored')
@@ -243,4 +243,4 @@ def multicolored():
     commander_description = commander.description
     commander_image = commander.png
     commander_name = commander.name
-    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description, url=commander.scryfall_uri)
+    return render_template('/no-restrictions.html', title='Random Commander', name=commander_name, image_png=commander_image, description=commander_description, url=commander.scryfall_uri, edhrec=commander.edhrec)
