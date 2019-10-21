@@ -5,7 +5,7 @@ requests==2.19.1
 six==1.11.0
 system==0.1.14
 tqdm==4.25.0
-urllib3==1.23
+urllib3==1.24.2
 click==6.7
 dominate==2.3.1
 Flask==1.0.2
